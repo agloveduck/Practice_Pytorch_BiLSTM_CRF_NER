@@ -25,22 +25,23 @@ def get_annotation(ann_path):
         return anns
 
 
-def get_text(txt_path):
-    with open(txt_path) as file:
+def get_text(txt_path):  # 打开txt文件
+    with open(txt_path,encoding='utf-8') as file:
         return file.read()
 
 
 # 建立文字和标签对应关系
 def generate_annotation():
-    for txt_path in glob(ORIGIN_DIR + '*.txt'):
-        ann_path = txt_path[:-3] + 'ann'
-        anns = get_annotation(ann_path)
-        text = get_text(txt_path)
+    for txt_path in glob(ORIGIN_DIR + '*.txt'):  # 获取txt文件路径
+        ann_path = txt_path[:-3] + 'ann'  # 获取ann文件路径
+        anns = get_annotation(ann_path)  # 字典形式
+        text = get_text(txt_path)      # 字符串形式
         # 建立文字和标注对应
+        # DataFrame 是一个表格型的数据结构 这里创建两列 word列对应字符 label列初始化全标注为O
         df = pd.DataFrame({'word': list(text), 'label': ['O'] * len(text)})
-        df.loc[anns.keys(), 'label'] = list(anns.values())
+        df.loc[anns.keys(), 'label'] = list(anns.values())  # 将实体类型为B I 的赋值给label列
         # 导出文件
-        file_name = os.path.split(txt_path)[1]
+        file_name = os.path.split(txt_path)[1]  # os.path.split(txt_path) 文件夹路径切割
         df.to_csv(ANNOTATION_DIR + file_name, header=None, index=None)
 
 
@@ -58,7 +59,7 @@ def split_sample(test_size=0.3):
 
 
 def merge_file(files, target_path):
-    with open(target_path, 'a') as file:
+    with open(target_path, 'a',encoding='utf-8') as file:
         for f in files:
             text = open(f).read()
             file.write(text)
@@ -84,10 +85,10 @@ def generate_label():
 
 
 if __name__ == '__main__':
-    anns = get_annotation('./input/origin/0.ann')
-    print(anns)  # 测试根据后缀名为ann的文件进行标注 返回一个字典 数据内容类似于 1845: 'B-Disease', 1846: 'I-Disease'
+    # anns = get_annotation('./input/origin/0.ann')
+    # print(anns)  # 测试根据后缀名为ann的文件进行标注 返回一个字典 数据内容类似于 1845: 'B-Disease', 1846: 'I-Disease'
     # 建立文字和标签对应关系
-    # generate_annotation()
+    generate_annotation()
     #
     # # 拆分训练集和测试集
     # split_sample()
