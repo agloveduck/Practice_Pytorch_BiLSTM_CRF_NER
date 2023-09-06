@@ -49,11 +49,11 @@ def generate_annotation():
 def split_sample(test_size=0.3):
     files = glob(ANNOTATION_DIR + '*.txt')
     random.seed(0)
-    random.shuffle(files)
+    random.shuffle(files)  # 随机打乱顺序 避免扎堆问题
     n = int(len(files) * test_size)
-    test_files = files[:n]
-    train_files = files[n:]
-    # 合并文件
+    test_files = files[:n]  # 测试集
+    train_files = files[n:]  # 训练集
+    # 合并文件 写入路径
     merge_file(train_files, TRAIN_SAMPLE_PATH)
     merge_file(test_files, TEST_SAMPLE_PATH)
 
@@ -61,7 +61,7 @@ def split_sample(test_size=0.3):
 def merge_file(files, target_path):
     with open(target_path, 'a',encoding='utf-8') as file:
         for f in files:
-            text = open(f).read()
+            text = open(f,encoding='utf-8').read()
             file.write(text)
 
 
@@ -84,14 +84,16 @@ def generate_label():
     label.to_csv(LABEL_PATH, header=None, index=None)
 
 
+
+
 if __name__ == '__main__':
     # anns = get_annotation('./input/origin/0.ann')
     # print(anns)  # 测试根据后缀名为ann的文件进行标注 返回一个字典 数据内容类似于 1845: 'B-Disease', 1846: 'I-Disease'
     # 建立文字和标签对应关系
-    generate_annotation()
+    # generate_annotation()
     #
     # # 拆分训练集和测试集
-    # split_sample()
+    split_sample()
     #
     # # 生成词表
     # generate_vocab()
