@@ -67,12 +67,19 @@ def merge_file(files, target_path):
 
 # 生成词表
 def generate_vocab():
-    df = pd.read_csv(TRAIN_SAMPLE_PATH, usecols=[0], names=['word'])
-    vocab_list = [WORD_PAD, WORD_UNK] + df['word'].value_counts().keys().tolist()
-    vocab_list = vocab_list[:VOCAB_SIZE]
-    vocab_dict = {v: k for k, v in enumerate(vocab_list)}
-    vocab = pd.DataFrame(list(vocab_dict.items()))
-    vocab.to_csv(VOCAB_PATH, header=None, index=None)
+    df = pd.read_csv(TRAIN_SAMPLE_PATH, usecols=[0], names=['word'])  # 从训练集中取汉字
+    # print(df['word'].value_counts())  # 统计字符频次个数
+    # print(df['word'].value_counts().keys().tolist())  # 所有字符放到list里
+    # exit()
+    vocab_list = [WORD_PAD, WORD_UNK] + df['word'].value_counts().keys().tolist()  # 将两个特殊字符也拼接到
+    vocab_list = vocab_list[:VOCAB_SIZE]  # 截取词表大小 去除一些频率较低的词
+    vocab_dict = {v: k for k, v in enumerate(vocab_list)}  # 字符：下标（从0开始） 的字典
+    # print(vocab_dict)
+    # exit()
+    vocab = pd.DataFrame(list(vocab_dict.items()))  # dataframe两列 字符 和下标
+    # print(vocab)
+    # exit()
+    vocab.to_csv(VOCAB_PATH, header=None, index=None)  # 写入词表
 
 
 # 生成标签表
@@ -93,10 +100,10 @@ if __name__ == '__main__':
     # generate_annotation()
     #
     # # 拆分训练集和测试集
-    split_sample()
+    # split_sample()
     #
     # # 生成词表
     # generate_vocab()
     #
     # # 生成标签表
-    # generate_label()
+    generate_label()
