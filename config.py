@@ -10,9 +10,9 @@ LABEL_PATH = './output/label.txt'
 WORD_PAD = '<PAD>'  # 填充字符 补长
 WORD_UNK = '<UNK>'  # 没有见过的词
 
-WORD_PAD_ID = 0
+WORD_PAD_ID = 0  # vocab.txt <PAD>的下标
 WORD_UNK_ID = 1
-LABEL_O_ID = 0
+LABEL_O_ID = 0  # label.txt o的下标
 
 VOCAB_SIZE = 3000  # 词表大小
 EMBEDDING_DIM = 100
