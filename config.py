@@ -15,13 +15,13 @@ WORD_UNK_ID = 1
 LABEL_O_ID = 0  # label.txt o的下标
 
 VOCAB_SIZE = 3000  # 词表大小
-EMBEDDING_DIM = 100
-HIDDEN_SIZE = 256
-TARGET_SIZE = 31
-LR = 1e-4
-EPOCH = 100
+EMBEDDING_DIM = 100  # 词向量维度
+HIDDEN_SIZE = 256   # LSTM 输出隐层的大小
+TARGET_SIZE = 31  # 经过全连接层输出向量的维度 label种类31个
+LR = 1e-4  # 学习率
+EPOCH = 100  # 所有数据被训练的总轮数
 
-MODEL_DIR = './output/model/'
+MODEL_DIR = './output/model/'  # 模型训练好后的保存位置
 
 import torch
 
