@@ -76,18 +76,18 @@ def collate_fn(batch):  # 数据校对处理 batch 是一个list
     return torch.tensor(input), torch.tensor(target), torch.tensor(mask).bool()  # mask转bool crf要求
 
 
-def extract(label, text):
-    i = 0
+def extract(label, text):  # 信息提取
+    i = 0  # 找非o字符的指针
     res = []
     while i < len(label):
         if label[i] != 'O':
-            prefix, name = label[i].split('-')
-            start = end = i
+            prefix, name = label[i].split('-')  # 根据-分隔出 前缀和实体名称 eg: B Disease
+            start = end = i  # start 找B end找属于这个实体的最后一个I
             i += 1
-            while i < len(label) and label[i] == 'I-' + name:
+            while i < len(label) and label[i] == 'I-' + name:  # 出界或碰到非I字符
                 end = i
                 i += 1
-            res.append([name, text[start:end + 1]])
+            res.append([name, text[start:end + 1]])  # 找到text中 实体名称，序列下标起始和结束
         else:
             i += 1
     return res

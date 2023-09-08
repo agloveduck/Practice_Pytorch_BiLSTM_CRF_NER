@@ -11,25 +11,22 @@ if __name__ == '__main__':
         collate_fn=collate_fn,
     )
 
-    model = Model().to(DEVICE)
+    model = Model()
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)
 
     for e in range(EPOCH):
         for b, (input, target, mask) in enumerate(loader):
-
-            input = input.to(DEVICE)
-            mask = mask.to(DEVICE)
-            target = target.to(DEVICE)
-
             y_pred = model(input, mask)
-
             loss = model.loss_fn(input, target, mask)
 
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
+            optimizer.zero_grad()  # 梯度清零
+            loss.backward()  # 反向传播
+            optimizer.step()  # 优化器迭代
+            # 三步走完应该有一个损失下降的过程
 
             if b % 10 == 0:
-                print('>> epoch:', e, 'loss:', loss.item())
+                print('>>epoch:', e, 'loss:', loss.item())  # 训练过程中只要loss是在下降就行
 
-        torch.save(model, MODEL_DIR + f'model_{e}.pth')
+            torch.save(model, MODEL_DIR + f'model_{e}.pth')
+            # print(y_pred)  # 二维list
+            # exit()
